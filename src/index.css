@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
+
+:root {
+  --green: #5eba47;
+  --dark: #2d4156;
+  --white: #eaeff2;
+  --overlay: rgba(4, 6, 8, 0.85);
+}
+
+*,
+*::after,
+*::before {
+  font-family: 'Open Sans', sans-serif;
+  color: var(--white);
+  margin: 0;
+  padding: 0;
+}
+
+.input__div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.styled_input {
+  padding: 0.3rem 1rem;
+  /* margin: 0 0.5rem; */
+  border: unset;
+  border-radius: 10px;
+  padding: 1rem;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: var(--dark);
+}
+
+.bg_black {
+  background: #2d4156;
+
+  height: 100vh;
+}
+
+.image {
+  width: 20rem !important;
+  height: 12rem;
+}
+
+.btn_ngen {
+  background-color: var(--dark);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px -2px #383838;
+  font-weight: 500;
+  padding: 15px 30px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn_ngen:hover {
+  background-color: var(--green);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.41);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.3px);
+  -webkit-backdrop-filter: blur(8.3px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 1rem;
+}
+
+.pages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task_list {
+  display: inline-block;
+  border: 1px solid black;
+  background: var(--dark);
+  color: black;
+  font-size: 0.875rem;
+
+  padding: 4px 8px;
+  margin: 0 5px;
+}
