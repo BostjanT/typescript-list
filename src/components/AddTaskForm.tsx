@@ -1,6 +1,8 @@
-import { Dispatch } from 'react';
-
-interface Props {
+import { useState, ChangeEvent } from 'react';
+import { Priority, Status } from '../constants/user-enum';
+import { nanoid } from 'nanoid';
+import Tasks from './Tasks';
+/* interface Props {
   setTitle: Dispatch<string>;
   setNewTask: Dispatch<string>;
   title: string;
@@ -10,9 +12,55 @@ interface Props {
   editTask: () => void;
   handleRadio: (e: any) => void;
   handleAddFile: (e: any) => void;
-}
+} */
 
-const AddTaskForm = (props: Props) => {
+const AddTaskForm = () => {
+  const [tasks, setTasks] = useState([] as any);
+  const [title, setTitle] = useState('');
+  const [newTask, setNewTask] = useState('');
+  const [taskId, setTaskId] = useState('');
+  const [addFile, setAddFile] = useState<File>();
+  const [status, setStatus] = useState<Status>(Status.NEW);
+  const [priorities, setPriorities] = useState<Priority>();
+
+  const addTask = () => {
+    if (newTask === '') return;
+    setTasks([
+      ...tasks,
+      {
+        id: nanoid(),
+        title: title,
+        description: newTask,
+        status: status,
+        priority: priorities,
+        date: new Date(),
+      },
+    ]);
+    setTitle('');
+    setNewTask('');
+  };
+
+  const editTask = () => {
+    const edTask = tasks.find((task: Tasks) => task.id === taskId);
+    if (edTask) {
+      edTask.description = newTask;
+      edTask.title = title;
+      setTasks([...tasks]);
+      setTaskId('');
+    }
+    setNewTask('');
+    setTitle('');
+  };
+
+  const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setAddFile(e.target.files[0]);
+    }
+  };
+
+  const handleRadio = (e: ChangeEvent<HTMLInputElement>) => {
+    setPriorities(e.target.value as Priority);
+  };
   return (
     <form className='container glass p-5'>
       <div className='form-group row align-items-center  mb-3'>
@@ -24,9 +72,9 @@ const AddTaskForm = (props: Props) => {
           type='text'
           name='title'
           id='title'
-          value={props.title}
+          value={title}
           placeholder='Add task title here...'
-          onChange={(e) => props.setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           required
         />
       </div>
@@ -38,9 +86,9 @@ const AddTaskForm = (props: Props) => {
           className='styled_input col-sm-10'
           type='text'
           name='task'
-          value={props.newTask}
+          value={newTask}
           placeholder='Enter your task here...'
-          onChange={(e) => props.setNewTask(e.target.value)}
+          onChange={(e) => setNewTask(e.target.value)}
         />
       </div>
       <fieldset className='form-group'>
@@ -54,7 +102,7 @@ const AddTaskForm = (props: Props) => {
                 name='gridRadios'
                 id='low'
                 value='Low'
-                onChange={props.handleRadio}
+                onChange={handleRadio}
               />
               <label className='form-check-label' htmlFor='low'>
                 Low
@@ -67,7 +115,7 @@ const AddTaskForm = (props: Props) => {
                 name='gridRadios'
                 id='medium'
                 value='Medium'
-                onChange={props.handleRadio}
+                onChange={handleRadio}
               />
               <label className='form-check-label' htmlFor='medium'>
                 Medium
@@ -80,7 +128,7 @@ const AddTaskForm = (props: Props) => {
                 name='gridRadios'
                 id='high'
                 value='High'
-                onChange={props.handleRadio}
+                onChange={handleRadio}
               />
               <label className='form-check-label' htmlFor='high'>
                 High
@@ -95,7 +143,7 @@ const AddTaskForm = (props: Props) => {
           type='file'
           name='attach'
           id='formFile'
-          onChange={props.handleAddFile}
+          onChange={handleAddFile}
         />
       </div>
       <div className='form-group row'>
@@ -103,10 +151,8 @@ const AddTaskForm = (props: Props) => {
           <button
             className='btn_ngen'
             type='submit'
-            onClick={() =>
-              props.taskId === '' ? props.addTask() : props.editTask()
-            }>
-            {props.taskId === '' ? 'Add Task' : 'Edit Task'}
+            onClick={() => (taskId === '' ? addTask() : editTask())}>
+            {taskId === '' ? 'Add Task' : 'Edit Task'}
           </button>
         </div>
       </div>
