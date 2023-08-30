@@ -89,11 +89,12 @@ const AddTaskForm = (props: Props) => {
           </div>
         </div>
       </fieldset>
-      <div className='col-sm-10'>
+      <div className='col-sm-6 mb-3'>
         <input
-          className='form-control-file mb-3'
+          className='form-control styled_input'
           type='file'
           name='attach'
+          id='formFile'
           onChange={props.handleAddFile}
         />
       </div>

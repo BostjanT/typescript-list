@@ -15,16 +15,16 @@ type Tasks = {
 };
 
 enum Status {
-  NEW,
-  DONE,
-  onHOLD,
-  PENDING,
+  NEW = 'new',
+  DONE = 'done',
+  onHOLD = 'onHold',
+  PENDING = 'pending',
 }
 
 enum Priority {
-  LOW,
-  MEDIUM,
-  HIGH,
+  LOW = 'low',
+  MEDIUM = 'medium',
+  HIGH = 'high',
 }
 
 const Tasks = () => {
@@ -33,7 +33,8 @@ const Tasks = () => {
   const [newTask, setNewTask] = useState('');
   const [taskId, setTaskId] = useState('');
   const [addFile, setAddFile] = useState<File>();
-  const [priorities, setPriorities] = useState<String>();
+  const [status, setStatus] = useState<Status>(Status.NEW);
+  const [priorities, setPriorities] = useState<Priority>();
 
   const addTask = () => {
     if (newTask === '') return;
@@ -43,8 +44,8 @@ const Tasks = () => {
         id: nanoid(),
         title: title,
         description: newTask,
-        status: Status,
-        priority: Priority,
+        status: status,
+        priority: priorities,
         date: new Date(),
       },
     ]);
