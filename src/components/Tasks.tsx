@@ -1,40 +1,55 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import Logo from '../assets/images/logo.png';
-
+import { nanoid } from 'nanoid';
 import Pagination from './Pagination/Pagination';
+import AddTaskForm from './AddTaskForm';
 
 type Tasks = {
   id: string;
   title: string;
   description: string;
-  status: string /* {
-    new: boolean;
-    done: boolean;
-    onHold: boolean;
-    pending: boolean;
-  } */;
-  priority: string /* {
-    low: boolean;
-    medium: boolean;
-    high: boolean;
-  } */;
+  status: string;
+  priority: string;
   date: string;
   add: string;
 };
 
+enum Status {
+  NEW,
+  DONE,
+  onHOLD,
+  PENDING,
+}
+
+enum Priority {
+  LOW,
+  MEDIUM,
+  HIGH,
+}
+
 const Tasks = () => {
-  const [status, setStatus] = useState();
+  const [tasks, setTasks] = useState([] as any);
+  const [title, setTitle] = useState('');
+  const [newTask, setNewTask] = useState('');
+  const [taskId, setTaskId] = useState('');
+  const [addFile, setAddFile] = useState<File>();
+  const [priorities, setPriorities] = useState<String>();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
-
-  const setTaskEdit = (id: string) => {
-    const task = tasks.find((task: Tasks) => task.id === id);
-    if (task) {
-      setNewTask(task.description);
-      setTitle(task.title);
-      setTaskId(task.id);
-    }
+  const addTask = () => {
+    if (newTask === '') return;
+    setTasks([
+      ...tasks,
+      {
+        id: nanoid(),
+        title: title,
+        description: newTask,
+        status: Status,
+        priority: Priority,
+        date: new Date(),
+      },
+    ]);
+    setTitle('');
+    setNewTask('');
   };
 
   const editTask = () => {
@@ -47,6 +62,28 @@ const Tasks = () => {
     }
     setNewTask('');
     setTitle('');
+  };
+
+  const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setAddFile(e.target.files[0]);
+    }
+  };
+
+  const handleRadio = (e: ChangeEvent<HTMLInputElement>) => {
+    setPriorities(e.target.value);
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  const setTaskEdit = (id: string) => {
+    const task = tasks.find((task: Tasks) => task.id === id);
+    if (task) {
+      setNewTask(task.description);
+      setTitle(task.title);
+      setTaskId(task.id);
+    }
   };
 
   const deleteTask = (id: string) => {
@@ -74,23 +111,33 @@ const Tasks = () => {
           <img src={Logo} alt='' className='img-fluid image' />
         </div>
         <h1 className='text-center mb-5'>TASK LIST</h1>
-
+        <AddTaskForm
+          title={title}
+          setTitle={setTitle}
+          newTask={newTask}
+          setNewTask={setNewTask}
+          addTask={addTask}
+          editTask={editTask}
+          taskId={taskId}
+          handleRadio={handleRadio}
+          handleAddFile={handleAddFile}
+        />
         <div>
           {currentTasks.map((task: Tasks) => {
             return (
               <div className='task_display' key={task.id}>
-                <h4 className={task.status.done ? 'done' : ''}>{task.title}</h4>
+                <h4 className={Status.DONE ? 'done' : ''}>{task.title}</h4>
                 <p>{task.description}</p>
                 <h4>{task.priority}</h4>
                 <div className='buttons'>
                   <button
-                    className={task.status.done ? 'done' : 'btn_ngen'}
+                    className={Status.DONE ? 'done' : 'btn_ngen'}
                     onClick={() => setTaskEdit(task.id)}>
                     EDIT
                   </button>
                   <button onClick={() => deleteTask(task.id)}>DELETE</button>
                   <button onClick={() => doneTask(task.id)}>
-                    {task.status.done ? 'UNDO' : 'DONE'}
+                    {Status.DONE ? 'UNDO' : 'DONE'}
                   </button>
                 </div>
               </div>
