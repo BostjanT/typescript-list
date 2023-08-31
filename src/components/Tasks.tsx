@@ -13,6 +13,7 @@ const Tasks = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
 
+  console.log(editedTask);
   function orderFirst(a: any, b: any) {
     return a - b;
   }
@@ -57,6 +58,7 @@ const Tasks = () => {
                 setTaskList([...taskList, foundTask]);
               }
             }}
+            editedTask={editedTask}
           />
         )}
         <div className='container'>
@@ -69,10 +71,17 @@ const Tasks = () => {
         </div>
         <div>
           {currentTasks.map((task: Task) => {
-            return <SingleTask task={task} />;
+            return (
+              <SingleTask
+                task={task}
+                onEditTaskClick={(task) => setEditedTask({ ...task })}
+                onDeleteTaskClick ={}
+              />
+            );
           })}
         </div>
       </div>
+
       <Pagination
         totalPosts={taskList.length}
         postsPerPage={postsPerPage}

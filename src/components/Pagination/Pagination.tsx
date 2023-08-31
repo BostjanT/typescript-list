@@ -18,7 +18,7 @@ const Pagination: React.FC<Paginate> = ({
   }
   return (
     <div className='pages'>
-      <ul>
+      <>
         {pageNumbers.map((number) => (
           <li className='task-list' key={number}>
             <a onClick={() => paginate(number)} href='!#'>
@@ -26,7 +26,7 @@ const Pagination: React.FC<Paginate> = ({
             </a>
           </li>
         ))}
-      </ul>
+      </>
     </div>
   );
 };

@@ -1,19 +1,23 @@
 import { useState, ChangeEvent } from 'react';
 import { Priority, Status } from '../constants/user-enum';
-import { nanoid } from 'nanoid';
 
 import { Task } from '../constants/task-type';
 interface TaskFormProps {
   editTask: (task: Task) => void;
+  editedTask: Task;
 }
 
 const AddTaskForm = (props: TaskFormProps) => {
-  const [title, setTitle] = useState('');
-  const [newTask, setNewTask] = useState('');
-  const [taskId, setTaskId] = useState('');
+  const [title, setTitle] = useState(props.editedTask.title);
+  const [newTask, setNewTask] = useState(props.editedTask.description);
+  const [taskId, setTaskId] = useState(props.editedTask.id);
   const [addFile, setAddFile] = useState<File>();
-  const [status, setStatus] = useState<Status>(Status.NEW);
-  const [priorities, setPriorities] = useState<Priority>();
+  const [status, setStatus] = useState<Status>(
+    props.editedTask.status as Status
+  );
+  const [priorities, setPriorities] = useState<Priority>(
+    props.editedTask.priority as Priority
+  );
   const [date, setDate] = useState('');
 
   const handleAddFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +86,7 @@ const AddTaskForm = (props: TaskFormProps) => {
                 name='gridRadios'
                 id='low'
                 value='Low'
+                checked={priorities === Priority.LOW}
                 onChange={handleRadio}
               />
               <label className='form-check-label' htmlFor='low'>
@@ -95,6 +100,7 @@ const AddTaskForm = (props: TaskFormProps) => {
                 name='gridRadios'
                 id='medium'
                 value='Medium'
+                checked={priorities === Priority.MEDIUM}
                 onChange={handleRadio}
               />
               <label className='form-check-label' htmlFor='medium'>
@@ -108,6 +114,7 @@ const AddTaskForm = (props: TaskFormProps) => {
                 name='gridRadios'
                 id='high'
                 value='High'
+                checked={priorities === Priority.HIGH}
                 onChange={handleRadio}
               />
               <label className='form-check-label' htmlFor='high'>
@@ -129,6 +136,7 @@ const AddTaskForm = (props: TaskFormProps) => {
                 name='gridRadios'
                 id='new'
                 value='New'
+                checked={status === Status.NEW}
                 onChange={handleStatusRadio}
               />
               <label className='form-check-label' htmlFor='new'>
@@ -142,6 +150,7 @@ const AddTaskForm = (props: TaskFormProps) => {
                 name='gridRadios'
                 id='done'
                 value='Done'
+                checked={status === Status.DONE}
                 onChange={handleStatusRadio}
               />
               <label className='form-check-label' htmlFor='done'>
@@ -154,7 +163,8 @@ const AddTaskForm = (props: TaskFormProps) => {
                 type='radio'
                 name='gridRadios'
                 id='onhold'
-                value='On Hold'
+                value='OnHold'
+                checked={status === Status.onHOLD}
                 onChange={handleStatusRadio}
               />
               <label className='form-check-label' htmlFor='onhold'>
@@ -167,7 +177,8 @@ const AddTaskForm = (props: TaskFormProps) => {
                 type='radio'
                 name='gridRadios'
                 id='pending'
-                value=' Pending'
+                value='Pending'
+                checked={status === Status.PENDING}
                 onChange={handleStatusRadio}
               />
               <label className='form-check-label' htmlFor='pending'>
@@ -194,12 +205,12 @@ const AddTaskForm = (props: TaskFormProps) => {
             onClick={(e) => {
               e.preventDefault();
               props.editTask({
-                id: nanoid(),
+                id: props.editedTask.id,
                 title: title,
                 description: newTask,
                 status: status,
                 priority: priorities as string,
-                date: '',
+                date: date,
                 add: '',
               });
             }}>
