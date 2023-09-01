@@ -5,6 +5,7 @@ import { Task } from '../constants/task-type';
 interface TaskFormProps {
   editTask: (task: Task) => void;
   editedTask: Task;
+  resetEditedTask: () => void;
 }
 
 const AddTaskForm = (props: TaskFormProps) => {
@@ -213,6 +214,7 @@ const AddTaskForm = (props: TaskFormProps) => {
                 date: date,
                 add: '',
               });
+              props.resetEditedTask();
             }}>
             {taskId === '' ? 'Add Task' : 'Edit Task'}
           </button>

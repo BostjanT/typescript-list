@@ -4,23 +4,10 @@ import { Task } from '../constants/task-type';
 interface Props {
   task: Task;
   onEditTaskClick: (task: Task) => void;
-  taskList: Task[];
+  onDeleteTaskClick: (id: any) => void;
 }
 
 const SingleTask = (props: Props) => {
-  /*   const setTaskEdit = (id: string) => {
-    const task = props.task.find((task: Task) => task.id === id);
-    if (task) {
-      props.setNewTask(task.description);
-      props.setTitle(task.title);
-      props.setTaskId(task.id);
-    }
-  };
-  */
-  const deleteTask = (id: string) => {
-    props.taskList.filter((task: Task) => task.id !== id);
-  };
-
   const dateFormat = () => {
     const date = new Date(props.task.date);
     const formatedDate = date.toLocaleDateString('uk-UK');
@@ -42,7 +29,7 @@ const SingleTask = (props: Props) => {
           </button>
           <button
             className='btn-status'
-            onClick={() => deleteTask(props.task.id)}>
+            onClick={() => props.onDeleteTaskClick(props.task.id)}>
             DELETE
           </button>
         </div>
